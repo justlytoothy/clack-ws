@@ -14,8 +14,9 @@ import org.hibernate.type.SqlTypes;
 @AllArgsConstructor
 public class Message extends BaseEntity {
   private Long createdBy;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="thread_id",referencedColumnName = "id")
   private Thread thread;
+  @Column(name = "thread_id")
+  private Long threadId;
 }
