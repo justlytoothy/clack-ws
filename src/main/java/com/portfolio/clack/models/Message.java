@@ -19,5 +19,4 @@ public class Message extends BaseEntity {
   private Thread thread;
   @Column(name = "thread_id")
   private Long threadId;
-
 }
