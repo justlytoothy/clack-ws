@@ -1,7 +1,6 @@
 package com.portfolio.clack.controllers;
 
 import com.portfolio.clack.models.Thread;
-import com.portfolio.clack.security.jwt.JwtUtils;
 import com.portfolio.clack.services.ThreadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

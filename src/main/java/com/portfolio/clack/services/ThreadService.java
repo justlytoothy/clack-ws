@@ -22,7 +22,7 @@ public class ThreadService {
   }
 
   public Thread getThread(Long id) {
-    return threadRepository.findById(id).get();
+    return threadRepository.findById(id).orElse(null);
   }
 
   public void deleteThread(Long id) {
