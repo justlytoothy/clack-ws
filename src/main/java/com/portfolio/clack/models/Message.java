@@ -1,15 +1,21 @@
 package com.portfolio.clack.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
-@Entity
 @EqualsAndHashCode(callSuper = true)
+@Data
+@Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "message")
 public class Message extends BaseEntity {
+
   @Column(name = "created_by")
   private Long createdBy;
 
@@ -17,22 +23,7 @@ public class Message extends BaseEntity {
   private Long threadId;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="thread_id", nullable = false)
+  @JoinColumn(name="thread_id", referencedColumnName = "id", insertable = false, updatable = false)
   private Thread thread;
 
-  public Long getCreatedBy() {
-    return createdBy;
-  }
-
-  public void setCreatedBy(Long createdBy) {
-    this.createdBy = createdBy;
-  }
-
-  public Long getThreadId() {
-    return threadId;
-  }
-
-  public void setThreadId(Long threadId) {
-    this.threadId = threadId;
-  }
 }
