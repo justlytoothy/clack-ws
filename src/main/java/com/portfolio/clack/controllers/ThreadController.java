@@ -1,13 +1,13 @@
 package com.portfolio.clack.controllers;
 
-import com.portfolio.clack.models.Thread;
+import com.portfolio.clack.dtos.ThreadDto;
+import com.portfolio.clack.entities.Thread;
 import com.portfolio.clack.services.ThreadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -22,25 +22,25 @@ public class ThreadController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Thread> get(@PathVariable Long id) {
+  public ResponseEntity<ThreadDto> get(@PathVariable Long id) {
     try {
-      Thread thread = threadService.getThread(id);
-      return new ResponseEntity<Thread>(thread, HttpStatus.OK);
+      ThreadDto threadDto = threadService.getThread(id);
+      return new ResponseEntity<ThreadDto>(threadDto, HttpStatus.OK);
     } catch (NoSuchElementException e) {
-      return new ResponseEntity<Thread>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<ThreadDto>(HttpStatus.NOT_FOUND);
     }
   }
   @PostMapping("/create")
-  public void add(@RequestBody Thread thread) {
-    threadService.saveThread(thread);
+  public void add(@RequestBody ThreadDto threadDto) {
+    threadService.saveThread(threadDto);
   }
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@RequestBody Thread thread, @PathVariable Long id) {
+  public ResponseEntity<?> update(@RequestBody ThreadDto threadDto, @PathVariable Long id) {
     try {
-      Thread existingThread = threadService.getThread(id);
-      thread.setId(id);
-      thread.setCreatedDate(existingThread.getCreatedDate());
-      threadService.saveThread(thread);
+      ThreadDto existingThreadDto = threadService.getThread(id);
+      threadDto.setId(id);
+      threadDto.setCreatedDate(existingThreadDto.getCreatedDate());
+      threadService.saveThread(threadDto);
       return new ResponseEntity<>(HttpStatus.OK);
     } catch (NoSuchElementException e) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);

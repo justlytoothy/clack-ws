@@ -1,6 +1,6 @@
 package com.portfolio.clack.controllers;
 
-import com.portfolio.clack.models.User;
+import com.portfolio.clack.dtos.UserDto;
 import com.portfolio.clack.repositories.UserRepository;
 import com.portfolio.clack.security.jwt.JwtUtils;
 import com.portfolio.clack.security.requests.LoginRequest;
@@ -16,8 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -49,21 +47,21 @@ public class AuthController {
     String jwt = jwtUtils.generateJwtToken(authentication);
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
     return ResponseEntity.ok(new JwtResponse(
             userDetails.getId(),
             userDetails.getUsername(),
-            jwt));
+            jwt,
+            userDetails.getUser()));
   }
   @PostMapping("/register")
-  public ResponseEntity<?> registerUser(@RequestBody User user) {
-    if (userRepository.existsByUsername(user.getUsername())) {
+  public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
+    if (userRepository.existsByUsername(userDto.getUsername())) {
       return ResponseEntity
               .badRequest()
               .body(new MessageResponse("Error: Username is already taken!"));
     }
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userService.saveUser(user);
+    userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    userService.saveUser(userDto);
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 }

@@ -1,12 +1,10 @@
-package com.portfolio.clack.models;
+package com.portfolio.clack.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -22,8 +20,15 @@ public class Message extends BaseEntity {
   @Column(name = "thread_id")
   private Long threadId;
 
+  @Column(name = "body")
+  private String body;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="thread_id", referencedColumnName = "id", insertable = false, updatable = false)
   private Thread thread;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name="created_by", referencedColumnName = "id", insertable = false, updatable = false)
+  private User creator;
 
 }

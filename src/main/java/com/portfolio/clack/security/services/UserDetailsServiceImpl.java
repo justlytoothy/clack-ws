@@ -1,6 +1,6 @@
 package com.portfolio.clack.security.services;
 
-import com.portfolio.clack.models.User;
+import com.portfolio.clack.entities.User;
 import com.portfolio.clack.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

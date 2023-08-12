@@ -1,12 +1,10 @@
 package com.portfolio.clack.controllers;
 
-import com.portfolio.clack.models.User;
-import com.portfolio.clack.security.jwt.JwtUtils;
+import com.portfolio.clack.dtos.UserDto;
 import com.portfolio.clack.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,33 +25,33 @@ public class UserController {
   }
 
   @GetMapping("")
-  public List<User> list() {
+  public List<UserDto> list() {
     return userService.listAllUser();
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> get(@PathVariable Long id) {
+  public ResponseEntity<UserDto> get(@PathVariable Long id) {
     try {
-      User user = userService.getUser(id);
-      return new ResponseEntity<User>(user, HttpStatus.OK);
+      UserDto userDto = userService.getUser(id);
+      return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
     } catch (NoSuchElementException e) {
-      return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<UserDto>(HttpStatus.NOT_FOUND);
     }
   }
   @PostMapping("/create")
-  public void add(@RequestBody User user) {
-    user.setUsername(user.getUsername().toLowerCase());
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userService.saveUser(user);
+  public void add(@RequestBody UserDto userDto) {
+    userDto.setUsername(userDto.getUsername().toLowerCase());
+    userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    userService.saveUser(userDto);
   }
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@RequestBody User user, @PathVariable Long id) {
+  public ResponseEntity<?> update(@RequestBody UserDto userDto, @PathVariable Long id) {
     try {
-      User existingUser = userService.getUser(id);
-      user.setId(id);
-      user.setCreatedDate(existingUser.getCreatedDate());
-      user.setPassword(existingUser.getPassword());
-      userService.saveUser(user);
+      UserDto existingUserDto = userService.getUser(id);
+      userDto.setId(id);
+      userDto.setCreatedDate(existingUserDto.getCreatedDate());
+      userDto.setPassword(existingUserDto.getPassword());
+      userService.saveUser(userDto);
       return new ResponseEntity<>(HttpStatus.OK);
     } catch (NoSuchElementException e) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -63,5 +61,4 @@ public class UserController {
   public void delete(@PathVariable Long id) {
     userService.deleteUser(id);
   }
-
 }

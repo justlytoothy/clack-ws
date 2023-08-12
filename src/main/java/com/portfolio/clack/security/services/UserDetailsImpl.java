@@ -1,7 +1,9 @@
 package com.portfolio.clack.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.portfolio.clack.models.User;
+import com.portfolio.clack.dtos.UserDto;
+import com.portfolio.clack.entities.User;
+import com.portfolio.clack.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,41 +20,42 @@ public class UserDetailsImpl implements UserDetails {
   private String username;
   @JsonIgnore
   private String password;
+
+  private UserDto user;
   private String photoUrl;
 
   private Collection<? extends GrantedAuthority> authorities;
 
   public UserDetailsImpl(final Long id, final String username, final String password,
-                         final Collection<? extends GrantedAuthority> authorities) {
+                         final Collection<? extends GrantedAuthority> authorities, final UserDto user) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.authorities = authorities;
+    this.user = user;
+
   }
   public UserDetailsImpl(final Long id, final String username, final String password,
-                         final Collection<? extends GrantedAuthority> authorities, final String photoUrl) {
+                         final Collection<? extends GrantedAuthority> authorities, final String photoUrl, final UserDto user) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.authorities = authorities;
     this.photoUrl = photoUrl;
+    this.user = user;
   }
 
   public static UserDetailsImpl build(User user) {
     List<GrantedAuthority> authorities = new ArrayList<>();
-    if (user.getPhotoUrl() != null) {
-      return new UserDetailsImpl(
-              user.getId(),
-              user.getUsername(),
-              user.getPassword(),
-              authorities,
-              user.getPhotoUrl());
-    }
+    UserDto userDto = new UserService.UserTransposer().toDtoType(user);
+    userDto.setPassword(null);
     return new UserDetailsImpl(
             user.getId(),
             user.getUsername(),
             user.getPassword(),
-            authorities);
+            authorities,
+            user.getPhotoUrl(),
+            userDto);
   }
 
   @Override
@@ -67,6 +70,10 @@ public class UserDetailsImpl implements UserDetails {
   @Override
   public String getPassword() {
     return password;
+  }
+
+  public UserDto getUser() {
+    return user;
   }
 
   @Override

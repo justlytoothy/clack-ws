@@ -1,4 +1,4 @@
-package com.portfolio.clack.models;
+package com.portfolio.clack.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -37,4 +37,14 @@ public class User extends BaseEntity {
           inverseJoinColumns = @JoinColumn(name = "thread_id"))
   @JsonIgnore
   private List<Thread> threads = new ArrayList<>();
+
+  @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL,
+          orphanRemoval = true, fetch = FetchType.EAGER)
+  @JsonIgnore
+  private List<Thread> createdThreads = new ArrayList<>();
+
+  @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL,
+          orphanRemoval = true, fetch = FetchType.EAGER)
+  @JsonIgnore
+  private List<Message> sentMessages = new ArrayList<>();
 }

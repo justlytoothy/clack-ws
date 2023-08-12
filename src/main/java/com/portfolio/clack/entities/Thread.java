@@ -1,4 +1,4 @@
-package com.portfolio.clack.models;
+package com.portfolio.clack.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -20,6 +18,10 @@ public class Thread extends BaseEntity {
 
   @Column(name = "created_by")
   private Long createdBy;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name="created_by", referencedColumnName = "id", insertable = false, updatable = false)
+  private User creator;
 
   @Column(name = "name")
   private String name;
