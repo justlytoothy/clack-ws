@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -30,6 +31,7 @@ public class ThreadController {
       return new ResponseEntity<ThreadDto>(HttpStatus.NOT_FOUND);
     }
   }
+
   @PostMapping("/create")
   public void add(@RequestBody ThreadDto threadDto) {
     threadService.saveThread(threadDto);

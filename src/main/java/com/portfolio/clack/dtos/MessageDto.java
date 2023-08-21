@@ -21,7 +21,7 @@ public class MessageDto extends BaseEntityDto {
 
   private String body;
 
-  private UserDto creator;
+  private UserLiteDto creator;
 
   private ThreadDto thread;
 
@@ -38,9 +38,9 @@ public class MessageDto extends BaseEntityDto {
             .build();
   }
 
-  public UserDto getCreator() {
+  public UserLiteDto getCreator() {
     if (creator == null) {
-      creator = new UserDto();
+      creator = new UserLiteDto();
     }
     return creator;
   }

@@ -18,10 +18,10 @@ public class ThreadDto extends BaseEntityDto {
 
   private String name;
 
-  private UserDto creator;
+  private UserLiteDto creator;
 
   @Builder.Default
-  private List<UserDto> users = new ArrayList<>();
+  private List<UserLiteDto> users = new ArrayList<>();
 
   @Builder.Default
   private List<MessageDto> messages = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ThreadDto extends BaseEntityDto {
             .createdDate(this.getCreatedDate())
             .updatedDate(this.getUpdatedDate())
             .build();
-    for (final UserDto userDto : this.getUsers()) {
+    for (final UserLiteDto userDto : this.getUsers()) {
       if (userDto != null) {
         threadDto.getUsers().add(userDto.clone(includeId));
       }
@@ -48,9 +48,9 @@ public class ThreadDto extends BaseEntityDto {
     return threadDto;
   }
 
-  public UserDto getCreator() {
+  public UserLiteDto getCreator() {
     if (creator == null) {
-      creator = new UserDto();
+      creator = new UserLiteDto();
     }
     return creator;
   }

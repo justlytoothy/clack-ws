@@ -27,7 +27,7 @@ public class Message extends BaseEntity {
   @JoinColumn(name="thread_id", referencedColumnName = "id", insertable = false, updatable = false)
   private Thread thread;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="created_by", referencedColumnName = "id", insertable = false, updatable = false)
   private User creator;
 

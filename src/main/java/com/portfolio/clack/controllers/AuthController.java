@@ -60,8 +60,9 @@ public class AuthController {
               .badRequest()
               .body(new MessageResponse("Error: Username is already taken!"));
     }
+    final String password = userDto.getPassword();
     userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
     userService.saveUser(userDto);
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    return authenticateUser(new LoginRequest(userDto.getUsername(),password));
   }
 }

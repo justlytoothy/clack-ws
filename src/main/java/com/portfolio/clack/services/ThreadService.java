@@ -41,9 +41,10 @@ public class ThreadService {
               .id(thread.getId())
               .name(thread.getName())
               .createdBy(thread.getCreatedBy())
+              .creator(new UserService.UserLiteTransposer().toDtoType(thread.getCreator()))
               .createdDate(thread.getCreatedDate())
               .updatedDate(thread.getUpdatedDate())
-              .users(buildUserDtos(thread.getUsers()))
+              .users(buildUserLiteDtos(thread.getUsers()))
               .messages(buildMessageDtos(thread.getMessages()))
               .build();
     }
@@ -56,7 +57,7 @@ public class ThreadService {
       thread.setCreatedBy(threadDto.getCreatedBy());
       thread.setCreatedDate(threadDto.getCreatedDate());
       thread.setUpdatedDate(threadDto.getUpdatedDate());
-      thread.setUsers(buildUsers(threadDto.getUsers()));
+      thread.setUsers(buildLiteUsers(threadDto.getUsers()));
       thread.setMessages(buildMessages(threadDto.getMessages()));
       return thread;
     }

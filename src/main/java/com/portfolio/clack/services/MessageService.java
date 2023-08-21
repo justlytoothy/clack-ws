@@ -5,10 +5,12 @@ import com.portfolio.clack.entities.Message;
 import com.portfolio.clack.repositories.MessageRepository;
 import com.portfolio.clack.util.AbstractTransposer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MessageService {
 
   private final MessageRepository messageRepository;
@@ -20,8 +22,9 @@ public class MessageService {
     this.messageRepository = messageRepository;
   }
 
-  public void saveMessage(MessageDto messageDto) {
-    messageRepository.save(messageTransposer.toEntityType(messageDto));
+  public MessageDto saveMessage(MessageDto messageDto) {
+    Long messageId = messageRepository.save(messageTransposer.toEntityType(messageDto)).getId();
+    return getMessage(messageId);
   }
 
   public MessageDto getMessage(Long id) {
@@ -41,6 +44,7 @@ public class MessageService {
               .body(message.getBody())
               .threadId(message.getThreadId())
               .createdBy(message.getCreatedBy())
+              .creator(new UserService.UserLiteTransposer().toDtoType(message.getCreator()))
               .createdDate(message.getCreatedDate())
               .updatedDate(message.getUpdatedDate())
               .build();

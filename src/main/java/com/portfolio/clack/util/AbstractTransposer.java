@@ -1,9 +1,6 @@
 package com.portfolio.clack.util;
 
-import com.portfolio.clack.dtos.BaseEntityDto;
-import com.portfolio.clack.dtos.MessageDto;
-import com.portfolio.clack.dtos.ThreadDto;
-import com.portfolio.clack.dtos.UserDto;
+import com.portfolio.clack.dtos.*;
 import com.portfolio.clack.entities.BaseEntity;
 import com.portfolio.clack.entities.Message;
 import com.portfolio.clack.entities.Thread;
@@ -59,6 +56,30 @@ public abstract class AbstractTransposer<E extends BaseEntityDto, T extends Base
       }
     }
     return userDtos;
+  }
+
+  protected List<UserLiteDto> buildUserLiteDtos(final List<User> users) {
+    final List<UserLiteDto> userDtos = new ArrayList<>();
+    if (users != null) {
+      for (final User user : users) {
+        if (user != null) {
+          userDtos.add(new UserService.UserLiteTransposer().toDtoType(user));
+        }
+      }
+    }
+    return userDtos;
+  }
+
+  protected List<User> buildLiteUsers(final List<UserLiteDto> userDtos) {
+    final List<User> users = new ArrayList<>();
+    if (userDtos != null) {
+      for (final UserLiteDto userDto : userDtos) {
+        if (userDto != null) {
+          users.add(new UserService.UserLiteTransposer().toEntityType(userDto));
+        }
+      }
+    }
+    return users;
   }
 
   protected List<User> buildUsers(final List<UserDto> userDtos) {

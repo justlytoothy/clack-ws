@@ -1,5 +1,6 @@
 package com.portfolio.clack.controllers;
 
+import com.portfolio.clack.dtos.ThreadDto;
 import com.portfolio.clack.dtos.UserDto;
 import com.portfolio.clack.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,16 @@ public class UserController {
   @GetMapping("")
   public List<UserDto> list() {
     return userService.listAllUser();
+  }
+
+  @GetMapping("/threads/{id}")
+  public ResponseEntity<List<ThreadDto>> getUserThreads(@PathVariable Long id) {
+    try {
+      List<ThreadDto> threadDtos = userService.getUserThreads(id);
+      return new ResponseEntity<List<ThreadDto>>(threadDtos, HttpStatus.OK);
+    } catch (NoSuchElementException e) {
+      return new ResponseEntity<List<ThreadDto>>(HttpStatus.NOT_FOUND);
+    }
   }
 
   @GetMapping("/{id}")
